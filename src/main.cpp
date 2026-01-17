@@ -1,10 +1,14 @@
 #include <Geode/binding/CCMenuItemSpriteExtra.hpp>
-#include "PackSelectPopup.hpp"
+#include <Geode/binding/FMODAudioEngine.hpp>
+
+#include <Geode/modify/LoadingLayer.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/VideoOptionsLayer.hpp>
 #include <Geode/modify/OptionsLayer.hpp>
 #include <Geode/modify/IDManager.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
+
+#include "PackSelectPopup.hpp"
 #include "Tutorial.hpp"
 
 using namespace geode::prelude;
@@ -127,3 +131,20 @@ class $modify(MyMenuLayer, MenuLayer) {
     }
 };
 
+class $modify(MyLoadingLayer, LoadingLayer) {
+    bool init(bool refresh) {
+        if (!LoadingLayer::init(refresh)) return false;
+
+        if (refresh) {
+            // Fix a bug where FMOD audio effects are not refreshed (like explode_11.ogg)
+            // To fix this, simply go through all the loaded FMOD sounds and release them so
+            // the game is forced to reload them after textures apply
+            auto fmod = FMODAudioEngine::get();
+            for (auto it = fmod->m_fmodSounds.begin(); it != fmod->m_fmodSounds.end(); ++it) {
+                it->second.m_sound->release();
+                it = fmod->m_fmodSounds.erase(it);
+            }
+        }
+        return true;
+    }
+};
