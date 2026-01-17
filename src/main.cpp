@@ -6,6 +6,7 @@
 #include <Geode/modify/VideoOptionsLayer.hpp>
 #include <Geode/modify/OptionsLayer.hpp>
 #include <Geode/modify/IDManager.hpp>
+#include <Geode/modify/FMODAudioEngine.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
 
 #include "PackSelectPopup.hpp"
@@ -138,9 +139,8 @@ class $modify(MyLoadingLayer, LoadingLayer) {
             // To fix this, simply go through all the loaded FMOD sounds and release them so
             // the game is forced to reload them after textures apply
             auto fmod = FMODAudioEngine::get();
-            for (auto it = fmod->m_fmodSounds.begin(); it != fmod->m_fmodSounds.end(); ++it) {
+            for (auto it = fmod->m_fmodSounds.begin(); it != fmod->m_fmodSounds.end(); it = fmod->m_fmodSounds.erase(it)) {
                 it->second.m_sound->release();
-                it = fmod->m_fmodSounds.erase(it);
             }
         }
 
