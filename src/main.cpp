@@ -6,7 +6,6 @@
 #include <Geode/modify/VideoOptionsLayer.hpp>
 #include <Geode/modify/OptionsLayer.hpp>
 #include <Geode/modify/IDManager.hpp>
-#include <Geode/modify/FMODAudioEngine.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
 
 #include "PackSelectPopup.hpp"
