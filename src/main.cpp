@@ -133,8 +133,6 @@ class $modify(MyMenuLayer, MenuLayer) {
 
 class $modify(MyLoadingLayer, LoadingLayer) {
     bool init(bool refresh) {
-        if (!LoadingLayer::init(refresh)) return false;
-
         if (refresh) {
             // Fix a bug where FMOD audio effects are not refreshed (like explode_11.ogg)
             // To fix this, simply go through all the loaded FMOD sounds and release them so
@@ -145,6 +143,7 @@ class $modify(MyLoadingLayer, LoadingLayer) {
                 it = fmod->m_fmodSounds.erase(it);
             }
         }
-        return true;
+
+        return LoadingLayer::init(refresh);
     }
 };
